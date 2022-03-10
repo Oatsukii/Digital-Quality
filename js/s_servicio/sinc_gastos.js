@@ -9,7 +9,7 @@ var application_productos = new Vue({
           key: '[SVR_D3$@rr0ll0_@3d524a53c110e4c22463b10ed32cef9d]',
           productoCollection: '',
 
-          numByPag : 30, 
+          numByPag : 10, 
           paginas : [],
           paginaCollection : [],
           paginaActual : 1,
