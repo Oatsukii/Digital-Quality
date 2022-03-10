@@ -1,0 +1,114 @@
+SET SCHEMA 'erp';
+
+CREATE TRIGGER tr_update_LMX_Document
+
+AFTER INSERT ON xml_lmx_document
+
+FOR EACH ROW EXECUTE
+
+PROCEDURE fn_tr_update_xml_lmx_document();
+
+-- DROP TRIGGER fn_tigger_update_LMX_Document ON xml_lmx_document;
+
+
+-- ALTER TABLE xml_lmx_document DISABLE TRIGGER actualizar_xml_lmx_document
+--Para habilitar el disparador
+
+--ALTER TABLE xml_lmx_document ENABLE TRIGGER actualizar_xml_lmx_document
+
+
+-- CREATE OR REPLACE FUNCTION
+SET SCHEMA 'erp';
+
+CREATE FUNCTION fn_tr_update_xml_lmx_document()
+    RETURNS trigger
+    LANGUAGE 'plpgsql'
+
+AS $BODY$
+DECLARE 
+
+ vRespuesta TEXT DEFAULT '';
+ vConexion INTEGER DEFAULT NULL;
+ datosXMLv2 RECORD;
+ 
+cursor_xmlv2 CURSOR 
+	FOR	SELECT
+	    xml_lmx_document_id,
+ 		xmltable.*
+	FROM erp.xml_lmx_document tx ,
+		XMLTABLE ( XMLNAMESPACES('http://www.sat.gob.mx/cfd/3' AS i
+								, 'http://www.w3.org/2001/XMLSchema-instance' AS xsi
+								, 'http://www.sat.gob.mx/TimbreFiscalDigital' AS tfd
+								, 'http://www.sat.gob.mx/TimbreFiscalDigital' AS schemaLocation
+								)
+				  				--,'/i:Comprobante/i:Conceptos/i:Concepto'
+				  				,'/' 	
+				  PASSING tx."CFDIXML"
+
+             COLUMNS
+                id FOR ORDINALITY
+				,Version text PATH '/i:Comprobante/@Version' NOT null
+				,Serie text PATH '/i:Comprobante/@Serie' null
+				,Folio text PATH '/i:Comprobante/@Folio' null
+				,Fecha TimeStamp PATH '/i:Comprobante/@Fecha' NOT null
+				,FormaPago text PATH '/i:Comprobante/@FormaPago' null
+				,TipoDeComprobante text PATH '/i:Comprobante/@TipoDeComprobante' NOT null
+				  
+				,Rfc text PATH '/i:Comprobante/i:Emisor/@Rfc' null
+				  	  
+				,UUID text PATH '/i:Comprobante/i:Complemento/tfd:TimbreFiscalDigital/@UUID' NOT null
+				,SelloSAT text PATH '/i:Comprobante/i:Complemento/tfd:TimbreFiscalDigital/@SelloSAT' NOT null
+				,NoCertificadoSAT text PATH '/i:Comprobante/i:Complemento/tfd:TimbreFiscalDigital/@NoCertificadoSAT' NOT null
+				,SelloCFD text PATH '/i:Comprobante/i:Complemento/tfd:TimbreFiscalDigital/@SelloCFD' NOT null
+				,FechaTimbrado text PATH '/i:Comprobante/i:Complemento/tfd:TimbreFiscalDigital/@FechaTimbrado' NOT null
+				,UsoCFDI text PATH '/i:Comprobante//@UsoCFDI' null				  
+
+				 )
+				 
+	WHERE tx."CFDIUUID" IS NULL;
+
+BEGIN
+
+	/*
+	IF datosXML.Rfc = 'RTP1810192I3' THEN
+	vConexion = 2;
+	ELSEIF datosXML.Rfc = 'MTB191223RQ7' THEN
+	vConexion = 5;
+	ELSEIF datosXMLv2.Rfc = 'RHA070809SU4' THEN
+	vConexion = 1;		
+	ELSE
+	vConexion = null;
+	END IF;
+	*/
+
+	FOR datosXMLv2 IN cursor_xmlv2 LOOP
+
+	IF datosXMLv2.Rfc = 'RTP1810192I3' THEN
+	vConexion = 2;
+	ELSEIF datosXMLv2.Rfc = 'MTB191223RQ7' THEN
+	vConexion = 5;
+	ELSE
+	vConexion = null;
+	END IF;
+
+	UPDATE erp.xml_lmx_document SET
+	"DocumentNo" = COALESCE(datosXMLv2.Serie,'') ||''|| COALESCE(datosXMLv2.Folio,'')
+	,"TaxID" =  datosXMLv2.Rfc
+	,"CFDISATCertificate" = datosXMLv2.NoCertificadoSAT
+	,"CFDISealingDate" =  datosXMLv2.Fecha
+	,"CFDIUUID" = datosXMLv2.UUID
+	--,CFDIToken = ''
+	,"CFDISeal" = datosXMLv2.SelloCFD
+	,"CFDISATSeal" = datosXMLv2.SelloSAT
+	--,CFDIString = ''
+	,"TipoDeComprobante" = datosXMLv2.TipoDeComprobante
+	,"UsoCFDI" = datosXMLv2.UsoCFDI
+	,id_servidor_origen = vConexion
+	WHERE xml_lmx_document_id = NEW.xml_lmx_document_id;
+	
+	END LOOP;
+
+   RETURN NEW;
+
+END;
+$BODY$;

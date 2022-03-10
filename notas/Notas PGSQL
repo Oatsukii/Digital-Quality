@@ -1,0 +1,2 @@
+Ignorar acentos en PostgreSQL
+CREATE EXTENSION unaccent;

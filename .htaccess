@@ -1,0 +1,15 @@
+RewriteEngine On
+
+#RewriteCond %{THE_REQUEST} "^.+? [^?]+\.php(?:[?/# ]|$)" [NC]
+#RewriteRule !^index\.php$ - [F,L,NC]
+
+#Deshabilitar la navegación del directorio
+#Options All -Indexes
+
+#Listado en Blanco
+IndexIgnore *
+
+ErrorDocument 403 /forbidden.html
+ErrorDocument 404 notfound.html
+ErrorDocument 500 servererror.html
+#ErrorDocument 403 /paginadeerror.html

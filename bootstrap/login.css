@@ -1,0 +1,124 @@
+
+body {
+font-family: 'Open Sans', sans-serif;
+color: #1a1a1a;
+background-color: #f0f0f0; }
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+margin: 0;
+font-weight: 600; }
+
+.button {
+color: #ffffff;
+background-color: #1976D2;
+padding: 12px 25px;
+font-size: 12px;
+letter-spacing: 1px;
+text-transform: uppercase;
+border: 0;
+border-radius: 2px;
+outline: 0;
+box-shadow: 3px 3px 20px rgba(0, 0, 0, 0.2);
+transition: all .2s; 
+}
+
+.button:hover, .button:active, .button:focus {
+    -ms-transform: scale(1.1);
+        transform: scale(1.1); }
+
+input {
+width: calc(110% - 50px);
+min-height: 30px;
+padding-left: 5px;
+padding-right: 5px;
+letter-spacing: .5px;
+border: 0;
+border-bottom: 2px solid #f0f0f0; }
+
+input:valid {
+    border-color: #1976D2; 
+}
+
+input:focus {
+    outline: none;
+    border-color: #ff8d00; }
+
+.form-list {
+padding-left: 0;
+list-style: none; }
+
+.form-list__row {
+    margin-bottom: 25px; }
+
+.form-list__row label {
+    position: relative;
+    display: block;
+    text-transform: uppercase;
+    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: .5px;
+    color: #939393; 
+}
+
+.modal {
+display: -ms-flexbox;
+display: flex;
+-ms-flex-pack: center;
+    justify-content: center;
+-ms-flex-align: center;
+    align-items: center;
+height: 100vh;
+width: 100vw;
+padding-top: 200px;
+z-index: 100; 
+overflow-y: auto;
+}
+.modal__container {
+    display: flex;
+    max-width: 800px;
+    min-height: 800px;
+    margin-bottom: 225px;
+    background-color: #ffffff;
+    border-radius: 5px;
+    box-shadow: 3px 3px 20px rgba(0, 0, 0, 0.1); 
+}
+
+.modal__featured {
+    position: relative;
+    min-width: 300px;
+    padding: 100px;
+    overflow: hidden;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px; 
+}
+
+.modal__circle {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 200%;
+    width: 200%;
+    background-color: #BBDEFB;
+    border-radius: 50%;
+    -ms-transform: translateX(-50%) translateY(-25%);
+        transform: translateX(-50%) translateY(-25%); 
+}
+
+.modal__product {
+    position: absolute;
+    top: 180px;
+    left: 60%;
+    width: 120%; height: 50%;
+    -ms-transform: translateX(calc(-50% - 10px));
+        transform: translateX(calc(-50% - 10px)); 
+    }
+
+.modal__content {
+    -ms-flex: 3;
+        flex: 3;
+        width: 800px;
+    padding: 200px 50px; }

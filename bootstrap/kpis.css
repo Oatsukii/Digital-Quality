@@ -1,0 +1,30 @@
+#contenedor {
+  position: absolute;  
+  height:100px;
+  width:800px;
+  background: red;  
+
+}
+
+
+#parametros {
+  position: fixed;  
+  top: 0;
+  left: 0;
+  width: 200px;
+  height: 400px;
+  background: yellow;
+
+}
+
+
+#datos {
+  position: fixed;  
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 80%;
+  background: blue;  
+
+}
+
