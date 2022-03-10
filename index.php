@@ -10,7 +10,6 @@
 
     <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
 	  <script src="https://unpkg.com/axios@0.25.0/dist/axios.min.js"></script>
-    <script src="https://unpkg.com/vue-router@4"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
     <script src="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.js"></script>
     <link rel="icon" href="image/desarrollo_refividrio.ico">
