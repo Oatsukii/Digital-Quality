@@ -15,10 +15,11 @@ class ModeloProductoLDM extends ConexionDB
     public static function agregarProductoM($datos)
     {
         try {
-                $stmt = ConexionDB::conectar()->prepare("SELECT FROM s_producto_ldm(:empleados, :empresa, :usuario)");
+                $stmt = ConexionDB::conectar()->prepare("SELECT FROM s_producto_ldm(:empleados, :empresa, :usuario, :proceso)");
                 $stmt->bindParam(":empresa", self::$vIdEmpresa, PDO::PARAM_INT);
                 $stmt->bindParam(":empleados", $datos->empleados, PDO::PARAM_STR);
                 $stmt->bindParam(":usuario", self::$vIdUsuario, PDO::PARAM_INT);
+                $stmt->bindParam(":proceso", $datos->proceso, PDO::PARAM_INT);
                 $stmt->execute();
                 return true;
                 

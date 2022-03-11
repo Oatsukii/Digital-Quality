@@ -1,76 +1,36 @@
-var application_servicios = new Vue({
+var application_empresas = new Vue({
 
-    el:'#s-servicio',
+    el:'#s-empresa',
 
     data(){
       return {
 
         modoAgregar : true,
         tituloModal : '',
-        modalServicios:false,
-        ServicioCollection:'',
-        ProcesosCollection: '',
+        modalProceso:false,
+        ProcesosCollection:'',
         modoAgregar : true,
-
-        selectEmpresa: '',
-        producto: 'sinc_producto.php' ,
-        productoldm: 'sinc_producto_ldm.php' ,
-        maquila: 'sinc_maquila.php' ,
-
-        id_s_proceso : null,
 
         hiddenId:null,
         nombre:'',
-        url:'',
+        periodo_inicio: '',
+        periodo_fin: '',
+        status:'',
         activo:true,
-        archivo: '',
-        servicio: '',
-        nombreProceso: null,
-      
+        ventanaServicios: 's_servicio.php',
       }
 
     },
     methods:{
-
-        obtenerParametros(){
-            const valores = window.location.search;
-            const urlParams = new URLSearchParams(valores);
-            var parametro = urlParams.get('action');
-            this.id_s_proceso = parametro;
-            this.datosProceso();
-        },
-
-        datosProceso(){
-            
-            let t = this;
-            const params = {
-                accion :'procesoMuestra',
-                id_s_proceso: this.id_s_proceso
-            };
-            axios.post('../controladores/c_s_proceso_costo.php',params).then(function (response){
-            
-                t.ProcesosCollection=response.data ;
-
-                for (let index = 0; index < t.ProcesosCollection.length; index++) {
-                    const element = t.ProcesosCollection[index];
-                    this.nombreProceso = element.nombre;
-                }
-                
-                console.log(this.nombreProceso);
-            }).catch(function (error) {
-                console.log(error);
-            });
-        },
 
         listar(){
             let t = this;
             const params = {
                 accion :'tabla',
             };
-            axios.post('../controladores/c_s_servicios.php',params).then(function (response){
+            axios.post('../controladores/c_s_proceso_costo.php',params).then(function (response){
             
-                t.ServicioCollection=response.data ;
-            
+                t.ProcesosCollection=response.data ;
             }).catch(function (error) {
                 console.log(error);
             });
@@ -79,7 +39,7 @@ var application_servicios = new Vue({
 
         comprobar(id){
 
-            if(this.nombre != '' || this.url !='' || this.archivo != ''){
+            if(this.nombre != ''){
                 if(id==1){
                     this.agregar();
                 }else if(id==2){
@@ -100,13 +60,13 @@ var application_servicios = new Vue({
         agregar(){
             const params = {
                 nombre:this.nombre,
-                url:this.url,
+                periodo_inicio:this.periodo_inicio,
+                periodo_fin:this.periodo_fin,
                 activo:this.activo,
-                archivo:this.archivo,
-                servicio:this.servicio,
+                status:this.status,
                 accion:'agregar',
             };
-            axios.post('../controladores/c_s_servicios.php',params)
+            axios.post('../controladores/c_s_proceso_costo.php',params)
             .then((response)=>{
                 if(response.data == true ){
                     Swal.fire(
@@ -117,14 +77,7 @@ var application_servicios = new Vue({
                     this.listar();
                     this.cerrarModal();
                 }
-                else{
-
-                    Swal.fire(
-                        'error',
-                        'No se puede agregar el registro.'+ "<br/>" + response.data.errorInfo,
-                        'error'
-                    );
-                }
+               
             });
         },     
 
@@ -132,14 +85,14 @@ var application_servicios = new Vue({
             const params = {
                 id : this.hiddenId,
                 nombre:this.nombre,
-                url:this.url,
+                periodo_inicio:this.periodo_inicio,
+                periodo_fin:this.periodo_fin,
                 activo:this.activo,
-                archivo: this.archivo,
-                servicio:this.servicio,
+                status:this.status,
                 accion:'editar',
             };
         
-            axios.post('../controladores/c_s_servicios.php',params)
+            axios.post('../controladores/c_s_proceso_costo.php',params)
             .then((response)=>{
                 if(response.data == true){
                     Swal.fire(
@@ -178,7 +131,7 @@ var application_servicios = new Vue({
                 }).then((result) => {
   
                     if (result.value) {
-                        axios.post('../controladores/c_s_servicios.php',params)
+                        axios.post('../controladores/c_s_proceso_costo.php',params)
                         .then((response)=>{ 
   
                         if(response.data == true){
@@ -202,29 +155,29 @@ var application_servicios = new Vue({
         },       
 
         abrirModal(modo, row = []){
-            this.modalServicios = true;
+            this.modalProceso = true;
             if(modo == 'agregar'){
                 this.tituloModal = 'Agregar';
             } else {
                 this.modoAgregar = false;
                 this.tituloModal= 'Editar';
                 this.nombre = row.nombre;
-                this.url = row.url;
+                this.periodo_inicio = row.periodo_inicio;
+                this.periodo_fin = row.periodo_fin;
+                this.status = row.status;
                 this.activo = row.activo;
-                this.archivo = row.archivo;
-                this.servicio = row.servicio;
-                this.hiddenId = row.id_s_servicio;
+                this.hiddenId = row.id_s_proceso_costo;
                 
             }
         },
 
         cerrarModal(){
-            this.modalServicios = false;
+            this.modalProceso = false;
             this.nombre = '';
-            this.url = '';
+            this.periodo_inicio = '';
+            this.periodo_fin = '';
             this.activo = true;
-            this.archivo = '';
-            this.servicio = '';
+            this.status = '';
             this.modoAgregar = true;
 
         },
@@ -233,8 +186,7 @@ var application_servicios = new Vue({
     },
 
    mounted() {
-       this.listar();
-       this.obtenerParametros();
+    this.listar();
   },   
 
  });

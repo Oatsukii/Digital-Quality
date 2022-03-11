@@ -5,6 +5,7 @@ var application_productos = new Vue({
     data(){
       return {
           parametro:null,
+          parametro2:null,
           api: '',
           key: '[SVR_D3$@rr0ll0_@3d524a53c110e4c22463b10ed32cef9d]',
           productoCollection: '',
@@ -23,7 +24,9 @@ var application_productos = new Vue({
             const valores = window.location.search;
             const urlParams = new URLSearchParams(valores);
             var parametro = urlParams.get('action');
+            var parametro2 = urlParams.get('proceso');
             this.parametro = parametro;
+            this.parametro2 = parametro2;
             this.listarUrlApi();
 
         },

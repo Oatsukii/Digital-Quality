@@ -22,7 +22,7 @@
                 <div class="col-md-12"  id="s-maquila">
                     <br>
 
-                    <div class="row">
+                    <!-- <div class="row">
                         <div class="col-md-4">
                             <b-form-group  class="mb-10 mt-10" label="Fecha de Inicio:">
                                 <input type="date" class="form-control" v-model='inicio'/>
@@ -38,7 +38,7 @@
                                 <button class="btn btn-primary" @click="apiProducto()">Sincronizar</button>
                             </b-form-group>
                         </div>
-                    </div><br>
+                    </div><br> -->
 
                     <div class="col-sm-16 col-sm-offset-4">
                         <div class="table-responsive">

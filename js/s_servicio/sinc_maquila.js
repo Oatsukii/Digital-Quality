@@ -5,6 +5,7 @@ var application_productos = new Vue({
     data(){
       return {
           parametro:null,
+          parametro2:null,
           api: '',
           key: '[SVR_D3$@rr0ll0_@3d524a53c110e4c22463b10ed32cef9d]',
           productoCollection: '',
@@ -12,6 +13,7 @@ var application_productos = new Vue({
           numByPag : 30, 
           paginas : [],
           paginaCollection : [],
+          ProcesosCollection: '' ,
           paginaActual : 1,
           ServicioCollection: '',
           inicio: '',
@@ -25,13 +27,38 @@ var application_productos = new Vue({
             const valores = window.location.search;
             const urlParams = new URLSearchParams(valores);
             var parametro = urlParams.get('action');
+            var parametro2 = urlParams.get('proceso');
             this.parametro = parametro;
-            console.log(this.parametro);
+            this.parametro2 = parametro2;
+            console.log(this.parametro, ' ', this.parametro2);
             this.listarUrlApi();
+            this.datosProceso();
 
         },
 
+        datosProceso(){
+            
+            let t = this;
+            const params = {
+                accion :'procesoMuestra',
+                id_s_proceso: this.parametro2
+            };
+            axios.post('../controladores/c_s_proceso_costo.php',params).then( (response) =>{
+            
+                t.ProcesosCollection=response.data ;
 
+                for (let index = 0; index < t.ProcesosCollection.length; index++) {
+                    const element = t.ProcesosCollection[index];
+                    this.inicio = element.periodo_inicio;
+                    this.termino = element.periodo_fin;
+                }
+
+                this.apiProducto();
+
+            }).catch(function (error) {
+                console.log(error);
+            });
+        },
 
         listarUrlApi(){
             let t = this;
@@ -121,6 +148,7 @@ var application_productos = new Vue({
             const params = {
                         empleados : array,
                         accion:'agregar',
+                        proceso: this.parametro2
             };
 
             Swal.fire({
