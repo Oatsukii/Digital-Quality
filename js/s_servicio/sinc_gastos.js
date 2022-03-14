@@ -30,7 +30,6 @@ var application_productos = new Vue({
             var parametro2 = urlParams.get('proceso');
             this.parametro = parametro;
             this.parametro2 = parametro2;
-            console.log(this.parametro, ' ', this.parametro2);
             this.listarUrlApi();
             this.datosProceso()
 
@@ -72,7 +71,7 @@ var application_productos = new Vue({
 
                 for (let index = 0; index < t.ServicioCollection.length; index++) {
                     const element = t.ServicioCollection[index];
-                    this.api = element.url;
+                    this.api = element.url + element.ruta;
                     
                 }
             

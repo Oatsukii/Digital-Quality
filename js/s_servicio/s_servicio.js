@@ -8,8 +8,10 @@ var application_servicios = new Vue({
         modoAgregar : true,
         tituloModal : '',
         modalServicios:false,
+        modalUrl:false,
         ServicioCollection:'',
         ProcesosCollection: '',
+        ConexionCollection: '',
         modoAgregar : true,
 
         selectEmpresa: '',
@@ -22,15 +24,43 @@ var application_servicios = new Vue({
         hiddenId:null,
         nombre:'',
         url:'',
+        ruta:'',
         activo:true,
         archivo: '',
         servicio: '',
+        id_s_conexion: '',
         nombreProceso: null,
+        obtener_url: '',
+        obtener_ruta: '',
       
       }
 
     },
     methods:{
+
+        listar(){
+            let t = this;
+
+            const params = {
+                accion :'tabla',
+            };
+            axios.post('../controladores/c_s_servicios.php',params).then( (response) =>{
+            
+                t.ServicioCollection=response.data ;
+
+                for (let index = 0; index < t.ServicioCollection.length; index++) {
+                    const element = t.ServicioCollection[index];
+                    this.obtener_url = element.url ;
+                    this.obtener_ruta = element.ruta ;
+                }
+            
+            }).catch(function (error) {
+                console.log(error);
+            });
+
+        },
+
+        // ********************* ServicioUsuario *********************//
 
         obtenerParametros(){
             const valores = window.location.search;
@@ -56,30 +86,33 @@ var application_servicios = new Vue({
                     this.nombreProceso = element.nombre;
                 }
                 
-                console.log(this.nombreProceso);
             }).catch(function (error) {
                 console.log(error);
             });
         },
 
-        listar(){
+        // ********************* ServicioUsuario *********************//
+
+        // ********************* ServicioGestion *********************//
+
+
+        listarConexion(){
             let t = this;
             const params = {
-                accion :'tabla',
+                accion :'listarConexion',
             };
             axios.post('../controladores/c_s_servicios.php',params).then(function (response){
             
-                t.ServicioCollection=response.data ;
+                t.ConexionCollection=response.data ;
             
             }).catch(function (error) {
                 console.log(error);
             });
-
         },
 
         comprobar(id){
 
-            if(this.nombre != '' || this.url !='' || this.archivo != ''){
+            if(this.nombre != '' || this.url !='' || this.ruta != '' || this.archivo != '' || this.id_s_conexion != ''){
                 if(id==1){
                     this.agregar();
                 }else if(id==2){
@@ -101,9 +134,11 @@ var application_servicios = new Vue({
             const params = {
                 nombre:this.nombre,
                 url:this.url,
+                ruta: this.ruta,
                 activo:this.activo,
                 archivo:this.archivo,
                 servicio:this.servicio,
+                id_s_conexion: this.id_s_conexion,
                 accion:'agregar',
             };
             axios.post('../controladores/c_s_servicios.php',params)
@@ -133,9 +168,11 @@ var application_servicios = new Vue({
                 id : this.hiddenId,
                 nombre:this.nombre,
                 url:this.url,
+                ruta: this.ruta,
                 activo:this.activo,
                 archivo: this.archivo,
                 servicio:this.servicio,
+                id_s_conexion: this.id_s_conexion,
                 accion:'editar',
             };
         
@@ -210,23 +247,68 @@ var application_servicios = new Vue({
                 this.tituloModal= 'Editar';
                 this.nombre = row.nombre;
                 this.url = row.url;
+                this.ruta = row.ruta;
                 this.activo = row.activo;
                 this.archivo = row.archivo;
                 this.servicio = row.servicio;
+                this.id_s_conexion = row.id_s_conexion;
                 this.hiddenId = row.id_s_servicio;
-                
             }
         },
 
         cerrarModal(){
             this.modalServicios = false;
+            this.modalUrl = false;
             this.nombre = '';
             this.url = '';
+            this.ruta = '';
             this.activo = true;
             this.archivo = '';
             this.servicio = '';
+            this.id_s_conexion = '';
+            this.obtener_url = this.obtener_url;
+            this.obtener_ruta = this.obtener_ruta;
             this.modoAgregar = true;
 
+        },
+
+
+        abrirModalUrl() {
+            console.log(this.obtener_url);
+            this.modalUrl = true;
+            this.modoAgregar = false;
+            this.tituloModal= 'Editar';
+            this.obtener_url = this.obtener_url;
+            this.obtener_ruta = this.obtener_ruta;
+        },
+
+        editarUrl(){
+            const params = {
+                url:this.obtener_url,
+                ruta: this.obtener_ruta,
+                accion:'editarUrl',
+            };
+
+            axios.post('../controladores/c_s_servicios.php',params)
+            .then((response)=>{
+                if(response.data == true){
+                    Swal.fire(
+                        'Exito!',
+                        'Registro Editado.',
+                        'success'
+                    );
+                    this.listar();
+                    this.cerrarModal();
+                }else{
+  
+                    Swal.fire(
+                        'error',
+                        'No se puede editar el registro.'+ "<br/>" + response.data.errorInfo,
+                        'error'
+                    );
+  
+                }
+            });
         },
 
 
@@ -234,6 +316,7 @@ var application_servicios = new Vue({
 
    mounted() {
        this.listar();
+       this.listarConexion();
        this.obtenerParametros();
   },   
 

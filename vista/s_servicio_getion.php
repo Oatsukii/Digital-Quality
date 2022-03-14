@@ -16,27 +16,17 @@
     
                 <div class="col-md-12"  id="s-servicio">
 
-                    <!-- <div class="row">
-                        <div class="col-md-3">
-                            <a v-bind:href="`${producto +`?action=`+'productos'}`"><button type="button" name="filter" class="btn btn-info btn-xs">Producto</button></a>
-                        </div>
-
-                        <div class="col-md-3">
-                            <a v-bind:href="`${productoldm +`?action=`+'productos'}`"><button type="button" name="filter" class="btn btn-info btn-xs" >ProductoLDM</button></a>
-                        </div>
-
-                        <div class="col-md-3">
-                            <a v-bind:href="`${maquila +`?action=`+'productos'}`"><button type="button" name="filter" class="btn btn-info btn-xs" >Maquila</button></a>
-                        </div>
-                    </div> -->
-
                     <div class="row">
+                        <div class="col-md-12 text-left">
+                            <button @click="abrirModalUrl()" class="btn btn-primary">Actualizar Url</button>
+                        </div>
                         <div class="col-md-12 text-right">
                             <button @click="abrirModal('agregar')" class="btn btn-primary">Nuevo</button>
                         </div>
                     </div>
                     <br>
-
+                    <strong>Url Actual: </strong><strong v-text="obtener_url"></strong><br>
+                    <strong>Ruta Actual: </strong><strong v-text="obtener_ruta"></strong>
                     <div class="col-sm-16 col-sm-offset-4">
                         <div class="table-responsive">
                             <table class="table table-bordered">
@@ -46,6 +36,7 @@
                                         <th scope="col">Nombre</th>
                                         <th scope="col">Servicio</th>
                                         <th scope="col">Url</th>
+                                        <th scope="col">Conexi&oacute;n</th>
                                         <th scope="col">Activo</th>
                                         <th scope="col"></th>
                                         <th scope="col"></th>
@@ -56,9 +47,9 @@
                                         <td v-text="row.id_s_servicio"></td>
                                         <td v-text="row.nombre"></td>
                                         <td v-text="row.servicio"></td>
-                                        <td v-text="row.url"></td>
+                                        <td v-text="row.url + row.ruta"></td>
+                                        <td v-text="row.nombre_conexion"></td>
                                         <td v-text="row.status_activo"></td>
-                                        <!-- <td><a v-bind:href="`${row.archivo +`?action=`+ row.nombre }`">SIncronizar</a></td> -->
                                         <td><button type="button" name="editar" class="btn btn-success edit"  @click="abrirModal('',row)">Editar</button></td>
                                         <td><button type="button" name="eliminar" class="btn btn-danger delete"  @click="eliminar(row.id_s_servicio)">Eliminar</button></td>
                                 </tbody>
@@ -83,16 +74,29 @@
                                         <b-form-input type="text" v-model="nombre" require></b-form-input>
                                     </b-form-group>
 
-                                    <b-form-group class="mb-10 mt-10" label="Url:">
-                                        <b-form-input type="text" v-model="url" required></b-form-input>
-                                    </b-form-group>
-
                                     <b-form-group class="mb-10 mt-10" label="Archivo:">
                                         <b-form-input type="text" v-model="archivo" required></b-form-input>
                                     </b-form-group>
 
+                                    <b-form-group class="mb-10 mt-10" label="Url:">
+                                        <b-form-input type="text" v-model="url" required></b-form-input>
+                                    </b-form-group>
+
+                                    <b-form-group class="mb-10 mt-10" label="Ruta:">
+                                        <b-form-input type="text" v-model="ruta" required></b-form-input>
+                                    </b-form-group>
+
                                     <b-form-group class="mb-10 mt-10" label="Servicio:">
                                         <b-form-input type="text" v-model="servicio" required></b-form-input>
+                                    </b-form-group>
+
+                                    <b-form-group  class="mb-10 mt-10" label="Conexi&oacute;n con:">
+                                        <b-form-select v-model="id_s_conexion" class="mb-3" >
+                                            <option :value="null">Selecciona una opci&oacute;n</option>
+                                            <option v-for="rows in ConexionCollection" :value="rows.id_s_conexion">
+                                                {{ rows.nombre_conexion }}
+                                            </option>
+                                        </b-form-select >
                                     </b-form-group>
 
                                     <b-form-group class="mb-10 mt-10">
@@ -109,6 +113,44 @@
                             </b-button>
 
                             <b-button v-else variant="primary"class="float-right ml-2" @click="comprobar(2);">
+                                Editar<i class="fas fa-pen"></i>
+                            </b-button>
+
+                            <b-button variant="danger" class="float-right" @click="cerrarModal()">
+                                Cerrar <i class="fas fa-times-circle"></i>
+                            </b-button>
+                        </div>
+                    </b-modal>
+
+                    <!-- Actualziacion de URL general -->
+
+                    <b-modal v-model="modalUrl">
+
+                        <template  slot="modal-header">
+                            <h5>{{tituloModal}}</h5>
+                            <button type="button" class="close" @click="cerrarModal()" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </template>
+
+                        <b-container fluid>
+                            <div>
+                                <b-form>
+                                    <b-form-group  class="mb-10 mt-10" label="URL:">
+                                        <b-form-input type="text" v-model="obtener_url" require></b-form-input>
+                                    </b-form-group>
+
+                                    <b-form-group class="mb-10 mt-10" label="Archivo:">
+                                        <b-form-input type="text" v-model="obtener_ruta" required></b-form-input>
+                                    </b-form-group>
+
+                                </b-form>
+                            </div>
+                        </b-container>
+
+                        <div slot="modal-footer" class="w-100">
+
+                            <b-button variant="primary"class="float-right ml-2" @click="editarUrl();">
                                 Editar<i class="fas fa-pen"></i>
                             </b-button>
 

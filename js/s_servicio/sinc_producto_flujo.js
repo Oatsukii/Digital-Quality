@@ -45,7 +45,7 @@ var application_productos = new Vue({
 
                 for (let index = 0; index < t.ServicioCollection.length; index++) {
                     const element = t.ServicioCollection[index];
-                    this.api = element.url;
+                    this.api = element.url + element.ruta;
                     
                 }
                 if(this.api != ''){

@@ -42,11 +42,10 @@ var application_productos = new Vue({
             axios.post('../controladores/c_s_servicios.php',params).then((response) => {
             
                 t.ServicioCollection=response.data ;
-                // accountNew[0].valido
 
                 for (let index = 0; index < t.ServicioCollection.length; index++) {
                     const element = t.ServicioCollection[index];
-                    this.api = element.url;
+                    this.api = element.url + element.ruta;
                     
                 }
                 if(this.api != ''){

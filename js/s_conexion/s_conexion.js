@@ -1,24 +1,19 @@
-var application_empresas = new Vue({
+var application_conexion = new Vue({
 
-    el:'#s-empresa',
+    el:'#s-conexion',
 
     data(){
       return {
 
         modoAgregar : true,
         tituloModal : '',
-        modalProceso:false,
-        ProcesosCollection:'',
-        EstadosCollection: '',
-        modoAgregar : true,
+        modalConexion:false,
+        ConexionCollection:'',
 
         hiddenId:null,
-        nombre:'',
-        periodo_inicio: '',
-        periodo_fin: '',
-        status:'',
+        nombre_conexion:'',
         activo:true,
-        ventanaServicios: 's_servicio.php',
+      
       }
 
     },
@@ -29,31 +24,19 @@ var application_empresas = new Vue({
             const params = {
                 accion :'tabla',
             };
-            axios.post('../controladores/c_s_proceso_costo.php',params).then(function (response){
+            axios.post('../controladores/c_s_conexion.php',params).then(function (response){
             
-                t.ProcesosCollection=response.data ;
+                t.ConexionCollection=response.data ;
+            
             }).catch(function (error) {
                 console.log(error);
             });
 
-        },
-
-        Estados(){
-            let t = this;
-            const params = {
-                accion:'EstadosListar',
-            };
-            axios.post('../controladores/c_s_estados.php',params).then(function (response){
-                t.EstadosCollection=response.data ;
-                console.log(EstadosCollection);
-            }).catch(function (error) {
-                console.log(error);
-            });
         },
 
         comprobar(id){
 
-            if(this.nombre != ''){
+            if(this.nombre_conexion != '' ){
                 if(id==1){
                     this.agregar();
                 }else if(id==2){
@@ -73,14 +56,11 @@ var application_empresas = new Vue({
 
         agregar(){
             const params = {
-                nombre:this.nombre,
-                periodo_inicio:this.periodo_inicio,
-                periodo_fin:this.periodo_fin,
+                nombre_conexion:this.nombre_conexion,
                 activo:this.activo,
-                status:this.status,
                 accion:'agregar',
             };
-            axios.post('../controladores/c_s_proceso_costo.php',params)
+            axios.post('../controladores/c_s_conexion.php',params)
             .then((response)=>{
                 if(response.data == true ){
                     Swal.fire(
@@ -91,22 +71,26 @@ var application_empresas = new Vue({
                     this.listar();
                     this.cerrarModal();
                 }
-               
+                else{
+
+                    Swal.fire(
+                        'error',
+                        'No se puede agregar el registro.'+ "<br/>" + response.data.errorInfo,
+                        'error'
+                    );
+                }
             });
         },     
 
         editar(){
             const params = {
                 id : this.hiddenId,
-                nombre:this.nombre,
-                periodo_inicio:this.periodo_inicio,
-                periodo_fin:this.periodo_fin,
+                nombre_conexion:this.nombre_conexion,
                 activo:this.activo,
-                status:this.status,
                 accion:'editar',
             };
         
-            axios.post('../controladores/c_s_proceso_costo.php',params)
+            axios.post('../controladores/c_s_conexion.php',params)
             .then((response)=>{
                 if(response.data == true){
                     Swal.fire(
@@ -145,7 +129,7 @@ var application_empresas = new Vue({
                 }).then((result) => {
   
                     if (result.value) {
-                        axios.post('../controladores/c_s_proceso_costo.php',params)
+                        axios.post('../controladores/c_s_conexion.php',params)
                         .then((response)=>{ 
   
                         if(response.data == true){
@@ -169,29 +153,23 @@ var application_empresas = new Vue({
         },       
 
         abrirModal(modo, row = []){
-            this.modalProceso = true;
+            this.modalConexion = true;
             if(modo == 'agregar'){
                 this.tituloModal = 'Agregar';
             } else {
                 this.modoAgregar = false;
                 this.tituloModal= 'Editar';
-                this.nombre = row.nombre;
-                this.periodo_inicio = row.periodo_inicio;
-                this.periodo_fin = row.periodo_fin;
-                this.status = row.id_s_estado;
+                this.nombre_conexion = row.nombre_conexion;
                 this.activo = row.activo;
-                this.hiddenId = row.id_s_proceso_costo;
+                this.hiddenId = row.id_s_conexion;
                 
             }
         },
 
         cerrarModal(){
-            this.modalProceso = false;
-            this.nombre = '';
-            this.periodo_inicio = '';
-            this.periodo_fin = '';
+            this.modalConexion = false;
+            this.nombre_conexion = '';
             this.activo = true;
-            this.status = '';
             this.modoAgregar = true;
 
         },
@@ -200,8 +178,7 @@ var application_empresas = new Vue({
     },
 
    mounted() {
-    this.listar();
-    this.Estados();
+       this.listar();
   },   
 
  });

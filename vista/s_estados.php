@@ -3,14 +3,14 @@
 ?>
 
 <div class="container-fluid px-4">
-    <h1 class="mt-4">Proceso</h1>
+    <h1 class="mt-4">Estado</h1>
         <ol class="breadcrumb mb-4">
             <li class="breadcrumb-item active"></li>
         </ol>
 
         <div class="card mb-4">
             <div class="card-header">
-                <i class="fas fa-table me-1"></i> Procesos
+                <i class="fas fa-table me-1"></i> Estados
             </div>
             <div class="card-body">
     
@@ -30,27 +30,21 @@
                                 <thead>
                                     <tr>
                                         <th scope="col">ID</th>
-                                        <th scope="col">Nombre</th>
-                                        <th scope="col">Fecha Inicio</th>
-                                        <th scope="col">Fecha Fin</th>
-                                        <th scope="col">Status</th>
+                                        <th scope="col">Estado</th>
+                                        <th scope="col">Abreviatura</th>
                                         <th scope="col">Activo</th>
-                                        <th scope="col"></th>
                                         <th scope="col"></th>
                                         <th scope="col"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr v-for="row in ProcesosCollection">
-                                        <td v-text="row.id_s_proceso_costo"></td>
-                                        <td v-text="row.nombre"></td>
-                                        <td v-text="row.periodo_inicio"></td>
-                                        <td v-text="row.periodo_fin"></td>
-                                        <td v-text="'(' + row.abreviatura + ')' + row.estado"></td>
+                                    <tr v-for="row in EstadosCollection">
+                                        <td v-text="row.id_s_estado"></td>
+                                        <td v-text="row.estado"></td>
+                                        <td v-text="row.abreviatura"></td>
                                         <td v-text="row.status_activo"></td>
-                                        <td> <a v-bind:href="`${ventanaServicios +`?action=`+row.id_s_proceso_costo}`">Servicios</a></td>
                                         <td><button type="button" name="editar" class="btn btn-success edit"  @click="abrirModal('',row)">Editar</button></td>
-                                        <td><button type="button" name="eliminar" class="btn btn-danger delete"  @click="eliminar(row.id_s_proceso_costo)">Eliminar</button></td>
+                                        <td><button type="button" name="eliminar" class="btn btn-danger delete"  @click="eliminar(row.id_s_estado)">Eliminar</button></td>
                                 </tbody>
                             </table>
                         </div>
@@ -69,25 +63,12 @@
                         <b-container fluid>
                             <div>
                                 <b-form>
-                                    <b-form-group  class="mb-10 mt-10" label="Nombre:">
-                                        <b-form-input type="text" v-model="nombre" require></b-form-input>
+                                    <b-form-group  class="mb-10 mt-10" label="Estado:">
+                                        <b-form-input type="text" v-model="estado" require></b-form-input>
                                     </b-form-group>
 
-                                    <b-form-group class="mb-10 mt-10" label="Fecha Inicio:">
-                                        <b-form-input type="date" v-model="periodo_inicio" required></b-form-input>
-                                    </b-form-group>
-
-                                    <b-form-group  class="mb-10 mt-10" label="Fecha Fin:">
-                                        <b-form-input type="date" v-model="periodo_fin" required></b-form-input>
-                                    </b-form-group>
-
-                                    <b-form-group  class="mb-10 mt-10" label="Status:">
-                                        <b-form-select v-model="status" >
-                                            <option :value="null">Selecciona una opci&oacute;n</option>
-                                            <option v-for="rows in EstadosCollection" :value="rows.id_s_estado">
-                                                ({{ rows.abreviatura }}){{ rows.estado }}
-                                            </option>
-                                        </b-form-select >
+                                    <b-form-group class="mb-10 mt-10" label="Abreviatura:">
+                                        <b-form-input type="text" v-model="abreviatura" required></b-form-input>
                                     </b-form-group>
 
                                     <b-form-group class="mb-10 mt-10">
@@ -121,7 +102,7 @@
       </div>
 
       
-    <script type="text/javascript" src="../js/s_proceso_costo/s_proceso_costo.js"></script>
+    <script type="text/javascript" src="../js/s_estados/s_estados.js"></script>
 
 <?php
 include 'footer.php';

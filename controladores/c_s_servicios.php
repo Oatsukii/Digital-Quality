@@ -35,6 +35,14 @@ switch($datos->accion){
         ControladorServicios::ServicioUnico($datos);
 
 	break;
+	case 'listarConexion': 
+        ControladorServicios::listarConexion($datos);
+
+	break;
+	case 'editarUrl': 
+        ControladorServicios::editarUrl($datos);
+
+	break;
 
 }
 
@@ -86,6 +94,20 @@ class ControladorServicios
 	{
 		require_once "../modelos/m_s_servicio.php";
 		$r = ModeloServicio::ServicioUnicoM($datos);
+		echo json_encode($r);
+	}
+
+	public static function listarConexion($datos)
+	{
+		require_once "../modelos/m_s_servicio.php";
+		$r = ModeloServicio::listarConexionM($datos);
+		echo json_encode($r);
+	}
+
+	public static function editarUrl($datos)
+	{
+		require_once "../modelos/m_s_servicio.php";
+		$r = ModeloServicio::editarUrlM($datos);
 		echo json_encode($r);
 	}
 

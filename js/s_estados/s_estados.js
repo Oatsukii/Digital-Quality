@@ -8,17 +8,13 @@ var application_empresas = new Vue({
         modoAgregar : true,
         tituloModal : '',
         modalProceso:false,
-        ProcesosCollection:'',
-        EstadosCollection: '',
+        EstadosCollection:'',
         modoAgregar : true,
 
         hiddenId:null,
-        nombre:'',
-        periodo_inicio: '',
-        periodo_fin: '',
-        status:'',
+        estado:'',
+        abreviatura: '',
         activo:true,
-        ventanaServicios: 's_servicio.php',
       }
 
     },
@@ -29,31 +25,18 @@ var application_empresas = new Vue({
             const params = {
                 accion :'tabla',
             };
-            axios.post('../controladores/c_s_proceso_costo.php',params).then(function (response){
-            
-                t.ProcesosCollection=response.data ;
-            }).catch(function (error) {
-                console.log(error);
-            });
-
-        },
-
-        Estados(){
-            let t = this;
-            const params = {
-                accion:'EstadosListar',
-            };
             axios.post('../controladores/c_s_estados.php',params).then(function (response){
+            
                 t.EstadosCollection=response.data ;
-                console.log(EstadosCollection);
             }).catch(function (error) {
                 console.log(error);
             });
+
         },
 
         comprobar(id){
 
-            if(this.nombre != ''){
+            if(this.estado != ''){
                 if(id==1){
                     this.agregar();
                 }else if(id==2){
@@ -73,14 +56,12 @@ var application_empresas = new Vue({
 
         agregar(){
             const params = {
-                nombre:this.nombre,
-                periodo_inicio:this.periodo_inicio,
-                periodo_fin:this.periodo_fin,
+                estado:this.estado,
+                abreviatura:this.abreviatura,
                 activo:this.activo,
-                status:this.status,
                 accion:'agregar',
             };
-            axios.post('../controladores/c_s_proceso_costo.php',params)
+            axios.post('../controladores/c_s_estados.php',params)
             .then((response)=>{
                 if(response.data == true ){
                     Swal.fire(
@@ -98,15 +79,13 @@ var application_empresas = new Vue({
         editar(){
             const params = {
                 id : this.hiddenId,
-                nombre:this.nombre,
-                periodo_inicio:this.periodo_inicio,
-                periodo_fin:this.periodo_fin,
+                estado:this.estado,
+                abreviatura:this.abreviatura,
                 activo:this.activo,
-                status:this.status,
                 accion:'editar',
             };
         
-            axios.post('../controladores/c_s_proceso_costo.php',params)
+            axios.post('../controladores/c_s_estados.php',params)
             .then((response)=>{
                 if(response.data == true){
                     Swal.fire(
@@ -145,7 +124,7 @@ var application_empresas = new Vue({
                 }).then((result) => {
   
                     if (result.value) {
-                        axios.post('../controladores/c_s_proceso_costo.php',params)
+                        axios.post('../controladores/c_s_estados.php',params)
                         .then((response)=>{ 
   
                         if(response.data == true){
@@ -175,23 +154,19 @@ var application_empresas = new Vue({
             } else {
                 this.modoAgregar = false;
                 this.tituloModal= 'Editar';
-                this.nombre = row.nombre;
-                this.periodo_inicio = row.periodo_inicio;
-                this.periodo_fin = row.periodo_fin;
-                this.status = row.id_s_estado;
+                this.estado = row.estado;
+                this.abreviatura = row.abreviatura;
                 this.activo = row.activo;
-                this.hiddenId = row.id_s_proceso_costo;
+                this.hiddenId = row.id_s_estado;
                 
             }
         },
 
         cerrarModal(){
             this.modalProceso = false;
-            this.nombre = '';
-            this.periodo_inicio = '';
-            this.periodo_fin = '';
+            this.estado = '';
+            this.abreviatura = '';
             this.activo = true;
-            this.status = '';
             this.modoAgregar = true;
 
         },
@@ -201,7 +176,6 @@ var application_empresas = new Vue({
 
    mounted() {
     this.listar();
-    this.Estados();
   },   
 
  });
