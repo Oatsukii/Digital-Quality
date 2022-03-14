@@ -98,7 +98,7 @@ class ModeloProcesoCosto extends ConexionDB
     public static function MostrarProcesoM($datos)
 	{
 		static $query = "SELECT
-                            id_s_proceso_costo, id_s_empresa, creado, creado_por, actualizado, actualizado_por, periodo_inicio, periodo_fin, nombre, status, activo, CASE WHEN activo = TRUE THEN 'Activo' ELSE 'No Activo' END AS status_activo
+                            id_s_proceso_costo, id_s_empresa, creado, creado_por, actualizado, actualizado_por, periodo_inicio, periodo_fin, nombre, activo, CASE WHEN activo = TRUE THEN 'Activo' ELSE 'No Activo' END AS status_activo
                         FROM s_proceso_costo WHERE id_s_proceso_costo = :id_s_proceso
                         ORDER BY id_s_proceso_costo";
 		$stmt = ConexionDB::conectar()->prepare($query);

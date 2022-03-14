@@ -45,7 +45,7 @@ var application_empresas = new Vue({
             };
             axios.post('../controladores/c_s_estados.php',params).then(function (response){
                 t.EstadosCollection=response.data ;
-                console.log(EstadosCollection);
+                console.log(t.EstadosCollection);
             }).catch(function (error) {
                 console.log(error);
             });
