@@ -24,7 +24,7 @@
             <br>
             <h1>Iniciar sesión</h1>
                 <input type="text" id="user" v-model="user" placeholder="USUARIO" required/>
-                <input type="password" id="password" v-model="password" placeholder="CONTRASEÑA" required/>
+                <input type="password" id="password" v-model="password" placeholder="CONTRASE&Ntilde;A" required/>
 
                 <select style="display:none" class="form-control" id="rol"></select><br/>
 
