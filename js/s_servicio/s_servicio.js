@@ -12,6 +12,7 @@ var application_servicios = new Vue({
         ServicioCollection:'',
         ProcesosCollection: '',
         ConexionCollection: '',
+        urlsCollection: '',
         modoAgregar : true,
 
         selectEmpresa: '',
@@ -32,6 +33,7 @@ var application_servicios = new Vue({
         nombreProceso: null,
         obtener_url: '',
         obtener_ruta: '',
+        obtener_conexion: '',
       
       }
 
@@ -47,12 +49,22 @@ var application_servicios = new Vue({
             axios.post('../controladores/c_s_servicios.php',params).then( (response) =>{
             
                 t.ServicioCollection=response.data ;
+                this.listarUrls();
+            }).catch(function (error) {
+                console.log(error);
+            });
 
-                for (let index = 0; index < t.ServicioCollection.length; index++) {
-                    const element = t.ServicioCollection[index];
-                    this.obtener_url = element.url ;
-                    this.obtener_ruta = element.ruta ;
-                }
+        },
+
+        listarUrls(){
+            let t = this;
+
+            const params = {
+                accion :'listarUrls',
+            };
+            axios.post('../controladores/c_s_servicios.php',params).then( (response) =>{
+            
+                t.urlsCollection=response.data ;
             
             }).catch(function (error) {
                 console.log(error);
@@ -266,26 +278,25 @@ var application_servicios = new Vue({
             this.archivo = '';
             this.servicio = '';
             this.id_s_conexion = '';
-            this.obtener_url = this.obtener_url;
-            this.obtener_ruta = this.obtener_ruta;
             this.modoAgregar = true;
 
         },
 
 
-        abrirModalUrl() {
-            console.log(this.obtener_url);
+        abrirModalUrl(url = []) {
             this.modalUrl = true;
             this.modoAgregar = false;
             this.tituloModal= 'Editar';
-            this.obtener_url = this.obtener_url;
-            this.obtener_ruta = this.obtener_ruta;
+            this.obtener_url = url.url;
+            this.obtener_ruta = url.ruta;
+            this.obtener_conexion = url.id_s_conexion;
         },
 
         editarUrl(){
             const params = {
                 url:this.obtener_url,
                 ruta: this.obtener_ruta,
+                conexion: this.obtener_conexion,
                 accion:'editarUrl',
             };
 

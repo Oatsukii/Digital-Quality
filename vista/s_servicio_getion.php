@@ -16,17 +16,29 @@
     
                 <div class="col-md-12"  id="s-servicio">
 
-                    <div class="row">
-                        <div class="col-md-12 text-left">
-                            <button @click="abrirModalUrl()" class="btn btn-primary">Actualizar Url</button>
+                    <div class="float: left;">
+                        <div v-for="url in urlsCollection">
+                            <div style="float: left;" >
+                                <button @click="abrirModalUrl(url)" class="btn btn-primary">{{ url.nombre_conexion }}</button> 
+                            </div>
                         </div>
+                    </div>
+
+                    <div class= "row">
                         <div class="col-md-12 text-right">
                             <button @click="abrirModal('agregar')" class="btn btn-primary">Nuevo</button>
                         </div>
                     </div>
                     <br>
-                    <strong>Url Actual: </strong><strong v-text="obtener_url"></strong><br>
-                    <strong>Ruta Actual: </strong><strong v-text="obtener_ruta"></strong>
+                    
+                    <div v-for="url in urlsCollection">
+                        <strong>Url Actual: </strong><strong v-text="url.url"></strong><br>
+                        <strong>Ruta Actual: </strong><strong v-text="url.ruta"></strong>
+                    </div>
+
+
+
+
                     <div class="col-sm-16 col-sm-offset-4">
                         <div class="table-responsive">
                             <table class="table table-bordered">

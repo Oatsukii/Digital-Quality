@@ -43,6 +43,10 @@ switch($datos->accion){
         ControladorServicios::editarUrl($datos);
 
 	break;
+	case 'listarUrls': 
+        ControladorServicios::listarUrls($datos);
+
+	break;
 
 }
 
@@ -108,6 +112,13 @@ class ControladorServicios
 	{
 		require_once "../modelos/m_s_servicio.php";
 		$r = ModeloServicio::editarUrlM($datos);
+		echo json_encode($r);
+	}
+
+	public static function listarUrls($datos)
+	{
+		require_once "../modelos/m_s_servicio.php";
+		$r = ModeloServicio::listarUrlsM($datos);
 		echo json_encode($r);
 	}
 

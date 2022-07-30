@@ -25,6 +25,20 @@ class ModeloServicio extends ConexionDB
         $stmt->close();
 	}
 
+    public static function listarUrlsM($datos)
+	{
+		static $query = "SELECT DISTINCT s.url, s.ruta , s.id_s_conexion, c.nombre_conexion
+                    FROM s_servicio AS s
+                    INNER JOIN s_conexion AS c
+                    ON c.id_s_conexion = s.id_s_conexion
+                        ";
+		$stmt = ConexionDB::conectar()->prepare($query);
+        $stmt -> execute();
+        
+        return $stmt -> fetchAll(PDO::FETCH_ASSOC);
+        $stmt->close();
+	}
+
     public static function agregarServicioM($datos)
     {
         try {
@@ -128,11 +142,12 @@ class ModeloServicio extends ConexionDB
 	{
             try {
                     static $tabla = "s_servicio";
-                    $stmt = ConexionDB::conectar()->prepare("UPDATE $tabla SET url =:url , ruta= :ruta, actualizado = CURRENT_TIMESTAMP, actualizado_por = :actualizadopor");
+                    $stmt = ConexionDB::conectar()->prepare("UPDATE $tabla SET url =:url , ruta= :ruta, actualizado = CURRENT_TIMESTAMP, actualizado_por = :actualizadopor WHERE id_s_conexion = :conexion");
 
                     $stmt->bindParam(":actualizadopor", self::$vIdUsuario, PDO::PARAM_INT);
                     $stmt->bindParam(":url", $datos->url, PDO::PARAM_STR );
                     $stmt->bindParam(":ruta", $datos->ruta, PDO::PARAM_STR );
+                    $stmt->bindParam(":conexion", $datos->conexion, PDO::PARAM_INT );
 
 
                     if ($stmt->execute()) {
