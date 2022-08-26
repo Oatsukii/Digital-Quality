@@ -22,7 +22,7 @@ class ModeloServicio extends ConexionDB
         $stmt -> execute();
         
         return $stmt -> fetchAll(PDO::FETCH_ASSOC);
-        $stmt->close();
+        
 	}
 
     public static function listarUrlsM($datos)
@@ -36,7 +36,7 @@ class ModeloServicio extends ConexionDB
         $stmt -> execute();
         
         return $stmt -> fetchAll(PDO::FETCH_ASSOC);
-        $stmt->close();
+        
 	}
 
     public static function agregarServicioM($datos)
@@ -57,7 +57,7 @@ class ModeloServicio extends ConexionDB
                 if ($stmt->execute()) {
                     return true;
                 }
-                $stmt->close();
+                
             } catch (Exception $exc) {
                 return $exc;
             }
@@ -84,7 +84,7 @@ class ModeloServicio extends ConexionDB
                     if ($stmt->execute()) {
                         return true;
                     }
-                    $stmt->close();
+                    
 
             } catch (Exception $exc) {
 
@@ -101,7 +101,7 @@ class ModeloServicio extends ConexionDB
 
                 if($stmt->execute())
                     return true;
-                    $stmt->close();
+                    
             } catch (Exception $exc) {
 
                 return $exc;
@@ -120,7 +120,7 @@ class ModeloServicio extends ConexionDB
         $stmt -> execute();
         
         return $stmt -> fetchAll(PDO::FETCH_ASSOC);
-        $stmt->close();
+        
     }
 
     public static function listarConexionM($datos)
@@ -135,7 +135,7 @@ class ModeloServicio extends ConexionDB
         $stmt -> execute();
         
         return $stmt -> fetchAll(PDO::FETCH_ASSOC);
-        $stmt->close();
+        
 	}
 
     public static function editarUrlM($datos)
@@ -153,7 +153,7 @@ class ModeloServicio extends ConexionDB
                     if ($stmt->execute()) {
                         return true;
                     }
-                    $stmt->close();
+                    
 
             } catch (Exception $exc) {
 

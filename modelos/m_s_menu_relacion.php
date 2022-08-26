@@ -27,7 +27,7 @@ class ModeloMenuRelacion extends ConexionDB
         $stmt->bindParam(":id_s_menu", $datos->id_s_menu, PDO::PARAM_INT);
         $stmt -> execute();
         return $stmt -> fetchAll(PDO::FETCH_ASSOC);
-        $stmt->close();
+        
 	}
 
     public static function agregarMenuM($datos)
@@ -47,7 +47,7 @@ class ModeloMenuRelacion extends ConexionDB
                 if($stmt->execute())
                     return true;
                     
-                $stmt->close();
+                
             } catch (Exception $exc) {
     
                 return $exc;
@@ -64,7 +64,7 @@ class ModeloMenuRelacion extends ConexionDB
 
                 if($stmt->execute())
                     return true;
-                    $stmt->close();
+                    
             } catch (Exception $exc) {
 
                 return $exc;

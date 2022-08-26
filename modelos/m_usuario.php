@@ -11,7 +11,6 @@ class ModeloUsuario extends ConexionDB
 		$stmt = ConexionDB::conectar()->prepare("SELECT * FROM $tabla ORDER BY id_usuario ASC");
         $stmt -> execute();
         return $stmt -> fetchAll(PDO::FETCH_ASSOC);
-        $stmt->close();
 	}
 
 	public static function agregarUsuariosM($datos)
@@ -30,7 +29,6 @@ class ModeloUsuario extends ConexionDB
         if($stmt->execute())
 			return true;
 			
-        $stmt->close();
 	}
 
 	public static function editarUsuariosM($datos)
@@ -51,7 +49,6 @@ class ModeloUsuario extends ConexionDB
             if($stmt->execute())
                 return true;
             //cerrar la conexion con la base de datos
-            $stmt->close();
 
         } catch (Exception $exc) {
 
@@ -84,7 +81,6 @@ class ModeloUsuario extends ConexionDB
 
             return $data;
 
-            $stmt->close();
 
         } catch (Exception $exc) {
 
@@ -103,7 +99,6 @@ class ModeloUsuario extends ConexionDB
 
             if($stmt->execute())
                 return true;
-               $stmt->close();
 
         } catch (Exception $exc) {
 
@@ -133,7 +128,6 @@ class ModeloUsuario extends ConexionDB
 
         $stmt -> execute();
         return $stmt -> fetchAll(PDO::FETCH_ASSOC);
-        $stmt->close();
 	}    
 
 

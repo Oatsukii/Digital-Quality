@@ -25,7 +25,7 @@ var login = new Vue({
 
             if (this.user != '' && this.password != '') { 
                //return axios.post("controladores/login.php", {user:this.user,password:this.password,accion:'buscarusuario'
-               const r = axios.post("controladores/login.php", {user:this.user,password:this.password,accion:'buscarusuario'
+               return axios.post("controladores/login.php", {user:this.user,password:this.password,accion:'buscarusuario'
 
                 }).then(function (response) { 
 

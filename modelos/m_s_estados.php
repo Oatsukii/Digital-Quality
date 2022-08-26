@@ -22,7 +22,7 @@ class ModeloEstado extends ConexionDB
         $stmt -> execute();
         
         return $stmt -> fetchAll(PDO::FETCH_ASSOC);
-        $stmt->close();
+        
 	}
 
     public static function agregarEstadoM($datos)
@@ -40,7 +40,7 @@ class ModeloEstado extends ConexionDB
                 if ($stmt->execute()) {
                     return true;
                 }
-                $stmt->close();
+                
             } catch (Exception $exc) {
                 return $exc;
             }
@@ -63,7 +63,7 @@ class ModeloEstado extends ConexionDB
                     if ($stmt->execute()) {
                         return true;
                     }
-                    $stmt->close();
+                    
 
             } catch (Exception $exc) {
 
@@ -80,7 +80,7 @@ class ModeloEstado extends ConexionDB
 
                 if($stmt->execute())
                     return true;
-                    $stmt->close();
+                    
             } catch (Exception $exc) {
 
                 return $exc;
@@ -98,7 +98,7 @@ class ModeloEstado extends ConexionDB
         $stmt -> execute();
         
         return $stmt -> fetchAll(PDO::FETCH_ASSOC);
-        $stmt->close();
+        
     }
 
 }

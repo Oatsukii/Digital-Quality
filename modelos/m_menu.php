@@ -11,7 +11,7 @@ class ModeloMenu extends ConexionDB
 		$stmt = ConexionDB::conectar()->prepare("SELECT *,CASE WHEN  activo = true THEN 'Activo' ELSE 'No Activo' END EstadoActivo FROM $tabla ORDER BY orden ASC");
         $stmt -> execute();
         return $stmt -> fetchAll(PDO::FETCH_ASSOC);
-        $stmt->close();
+        
 	}
 
     public static function agregarMenuM($datos)
@@ -31,7 +31,6 @@ class ModeloMenu extends ConexionDB
                 if($stmt->execute())
                     return true;
                     
-                $stmt->close();
             } catch (Exception $exc) {
     
                 return $exc;
@@ -55,9 +54,6 @@ class ModeloMenu extends ConexionDB
 
                     if($stmt->execute())
                         return true;
-                    //cerrar la conexion con la base de datos
-                    $stmt->close();
-
             } catch (Exception $exc) {
 
                 return $exc;
@@ -73,7 +69,7 @@ class ModeloMenu extends ConexionDB
 
                 if($stmt->execute())
                     return true;
-                    $stmt->close();
+                    
             } catch (Exception $exc) {
 
                 return $exc;
@@ -88,7 +84,7 @@ class ModeloMenu extends ConexionDB
                 $stmt->bindParam(":activo", $datos->activo, PDO::PARAM_BOOL);
                 $stmt -> execute();
                 return $stmt -> fetchAll(PDO::FETCH_ASSOC);
-                $stmt->close();
+                
             } catch (Exception $exc) {
 
                 return $exc;

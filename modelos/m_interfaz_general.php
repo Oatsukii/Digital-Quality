@@ -33,7 +33,6 @@ class ModeloInterfazGeneral extends ConexionDB
         $stmt->bindParam(":idempresa", $datos->idempresa, PDO::PARAM_INT);
         $stmt -> execute();
         return $stmt -> fetchAll(PDO::FETCH_ASSOC);
-        $stmt->close();
 	}
 
 

@@ -20,7 +20,6 @@ class ModeloPerfil extends ConexionDB
             $stmt->bindParam(":id", self::$vIdUsuario, PDO::PARAM_INT);
             $stmt -> execute();
             return $stmt -> fetchAll(PDO::FETCH_ASSOC);
-            $stmt->close();
 
         } catch (Exception $exc) {
 
@@ -40,7 +39,7 @@ class ModeloPerfil extends ConexionDB
 
             if($stmt->execute())
                 return true;
-               $stmt->close();
+
 
         } catch (Exception $exc) {
 

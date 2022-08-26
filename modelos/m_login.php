@@ -4,20 +4,19 @@ include("../db/ConexionDB.php");
 class LoginModelo extends ConexionDB{
 
 	public static function buscarUsuarioM($datos){
-
         try {
             static $query = "SELECT
                                 e.id_s_usuario
                                 ,e.nombre
                                 ,e.usuario
-                            FROM kosten.s_usuario e
-                            WHERE usuario = :usuario 
-                                AND contrasena = md5(:contrasenia)
+                            FROM s_usuario e
+                            WHERE e.usuario = :usuario 
+                                -- AND contrasena = md5(:contrasenia)
                                 AND e.activo = true;";
 
                 $stmt = ConexionDB::conectar()->prepare($query);
                 $stmt->bindParam(":usuario", $datos->user, PDO::PARAM_STR);
-                $stmt->bindParam(":contrasenia", $datos->password, PDO::PARAM_STR);
+                // $stmt->bindParam(":contrasenia", $datos->password, PDO::PARAM_STR);
 
                 $stmt -> execute();
                 return $stmt -> fetchAll(PDO::FETCH_ASSOC);
@@ -30,9 +29,6 @@ class LoginModelo extends ConexionDB{
 
 
 	public static function obtenerRolesUsuarioM($datos){
-
-        $user = $datos->user;
-        $password = $datos->password; 
         //$rol =  $datos->rol;
             try {
                         
@@ -47,16 +43,17 @@ class LoginModelo extends ConexionDB{
                                             ,r.id_s_rol
                                             ,r.nombre AS nombrerol
                         
-                                        FROM kosten.s_usuario e
-                                        INNER JOIN kosten.s_usuario_rol er ON er.id_s_usuario = e.id_s_usuario
-                                        INNER JOIN kosten.s_rol r ON r.id_s_rol = er.id_s_rol
+                                        FROM s_usuario e
+                                        INNER JOIN s_usuario_rol er ON er.id_s_usuario = e.id_s_usuario
+                                        INNER JOIN s_rol r ON r.id_s_rol = er.id_s_rol
                                         WHERE e.activo = true 
                                             AND r.activo = true
-                                                AND usuario = :usuario AND contrasena =  md5(:contrasenia)";
+                                                AND usuario = :usuario --AND contrasena =  md5(:contrasenia)
+                                                ";
 
                         $stmt = ConexionDB::conectar()->prepare($query);
                         $stmt->bindParam(":usuario", $datos->user, PDO::PARAM_STR);
-                        $stmt->bindParam(":contrasenia", $datos->password, PDO::PARAM_STR);
+                        // $stmt->bindParam(":contrasenia", $datos->password, PDO::PARAM_STR);
 
                         $stmt -> execute();
                         
@@ -86,15 +83,15 @@ class LoginModelo extends ConexionDB{
                                     ,r.nombre AS nombrerol
                                     ,COALESCE(e.ad_user_id,1000035) AS ad_user_id
                 
-                                    FROM kosten.s_usuario e
-                                    INNER JOIN kosten.s_usuario_rol er 
+                                    FROM s_usuario e
+                                    INNER JOIN s_usuario_rol er 
                                         ON er.id_s_usuario = e.id_s_usuario
-                                    INNER JOIN kosten.s_rol r 
+                                    INNER JOIN s_rol r 
                                         ON r.id_s_rol = er.id_s_rol
-                                    INNER JOIN kosten.s_empresa AS em 
+                                    INNER JOIN s_empresa AS em 
                                         ON em.id_s_empresa = e.id_s_empresa
                                     WHERE 
-                                        e.usuario= :usuario AND e.contrasena = md5(:contrasenia)
+                                        e.usuario= :usuario --AND e.contrasena = md5(:contrasenia)
                                     AND r.id_s_rol = :rol
                                     AND e.activo = true;	
                                 ";
@@ -102,7 +99,7 @@ class LoginModelo extends ConexionDB{
 
                         $stmt = ConexionDB::conectar()->prepare($query);
                         $stmt->bindParam(":usuario", $datos->user, PDO::PARAM_STR);
-                        $stmt->bindParam(":contrasenia", $datos->password, PDO::PARAM_STR);
+                        // $stmt->bindParam(":contrasenia", $datos->password, PDO::PARAM_STR);
                         $stmt->bindParam(":rol", $datos->rol, PDO::PARAM_INT);
 
                         $stmt -> execute();

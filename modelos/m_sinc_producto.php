@@ -22,7 +22,7 @@ class ModeloProducto extends ConexionDB
                 $stmt->execute();
                 return true;
                 
-                $stmt->close();
+                
             } catch (Exception $exc) {
                 return $exc;
             }
@@ -41,7 +41,7 @@ class ModeloProducto extends ConexionDB
         $stmt -> execute();
         
         return $stmt -> fetchAll(PDO::FETCH_ASSOC);
-        $stmt->close();
+        
 	}
 
     public static function listarServicioM($datos){
@@ -57,7 +57,7 @@ class ModeloProducto extends ConexionDB
         $stmt -> execute();
         
         return $stmt -> fetchAll(PDO::FETCH_ASSOC);
-        $stmt->close();
+        
     }
 
 }

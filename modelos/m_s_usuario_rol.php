@@ -31,7 +31,7 @@ class ModeloUsuarioRol extends ConexionDB
 
         $stmt -> execute();
         return $stmt -> fetchAll(PDO::FETCH_ASSOC);
-        $stmt->close();
+        
 	}
 
     public static function agregarRolesUsuarioM($datos)
@@ -47,7 +47,7 @@ class ModeloUsuarioRol extends ConexionDB
             $stmt->bindParam(":id_s_usuario", $datos->id_s_usuario, PDO::PARAM_INT);
             $stmt -> execute();
             return $stmt -> fetchAll(PDO::FETCH_ASSOC);
-            $stmt->close();
+            
 
         } catch (Exception $exc) {
 
@@ -66,7 +66,7 @@ class ModeloUsuarioRol extends ConexionDB
 
              if($stmt->execute())
                 return true;
-                $stmt->close();
+                
 
         } catch (Exception $exc) {
 

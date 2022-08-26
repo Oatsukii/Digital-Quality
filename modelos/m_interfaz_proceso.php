@@ -13,7 +13,6 @@ class ModeloInterfazProceso extends ConexionDB
 
         $stmt -> execute();
         return $stmt -> fetchAll(PDO::FETCH_ASSOC);
-        $stmt->close();
 	}
 
 	public static function agregarInterfazProcesoM($datos)
@@ -33,7 +32,6 @@ class ModeloInterfazProceso extends ConexionDB
         if($stmt->execute())
 			return true;
 			
-        $stmt->close();
 	}
 
 	public static function editarInterfazProcesoM($datos)
@@ -52,8 +50,6 @@ class ModeloInterfazProceso extends ConexionDB
 
             if($stmt->execute())
                 return true;
-            //cerrar la conexion con la base de datos
-            $stmt->close();
 
         } catch (Exception $exc) {
 
@@ -82,7 +78,6 @@ class ModeloInterfazProceso extends ConexionDB
 
         $stmt -> execute();
         return $stmt -> fetchAll(PDO::FETCH_ASSOC);
-        $stmt->close();
 	}
 
     public static function tablaPlantillaM($datos)
@@ -93,7 +88,6 @@ class ModeloInterfazProceso extends ConexionDB
 
         $stmt -> execute();
         return $stmt -> fetchAll(PDO::FETCH_ASSOC);
-        $stmt->close();
 	}
 
     

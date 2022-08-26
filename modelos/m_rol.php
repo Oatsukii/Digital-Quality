@@ -10,7 +10,7 @@ class ModeloRol extends ConexionDB
 		$stmt = ConexionDB::conectar()->prepare("SELECT *,CASE WHEN  activo = true THEN 'Activo' ELSE 'No Activo' END EstadoActivo FROM $tabla ORDER BY id_rol ASC");
         $stmt -> execute();
         return $stmt -> fetchAll(PDO::FETCH_ASSOC);
-        $stmt->close();
+        
 	}
     
     public static function agregarRolM($datos)
@@ -27,7 +27,7 @@ class ModeloRol extends ConexionDB
                 if($stmt->execute())
                     return true;
                     
-                $stmt->close();
+                
             } catch (Exception $exc) {
     
                 return $exc;
@@ -49,7 +49,7 @@ class ModeloRol extends ConexionDB
                     if($stmt->execute())
                         return true;
                     //cerrar la conexion con la base de datos
-                    $stmt->close();
+                    
 
             } catch (Exception $exc) {
 
@@ -66,7 +66,7 @@ class ModeloRol extends ConexionDB
 
                 if($stmt->execute())
                     return true;
-                    $stmt->close();
+                    
             } catch (Exception $exc) {
 
                 return $exc;
@@ -80,7 +80,7 @@ class ModeloRol extends ConexionDB
         $stmt->bindParam(":id", $datos->id, PDO::PARAM_INT);
         $stmt -> execute();
         return $stmt -> fetchAll(PDO::FETCH_ASSOC);
-        $stmt->close();
+        
 	}
 
 }

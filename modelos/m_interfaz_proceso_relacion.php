@@ -23,7 +23,6 @@ class ModeloInterfazProcesoLinea extends ConexionDB
         $stmt->bindParam(":id", $datos->id, PDO::PARAM_BOOL);
         $stmt -> execute();
         return $stmt -> fetchAll(PDO::FETCH_ASSOC);
-        $stmt->close();
 	}
 
     public static function agregarDevAlmacenLineaM($datos)
@@ -39,7 +38,6 @@ class ModeloInterfazProcesoLinea extends ConexionDB
                 if($stmt->execute())
                     return true;
                     
-                $stmt->close();
             } catch (Exception $exc) {
     
                 return $exc;
@@ -61,7 +59,6 @@ class ModeloInterfazProcesoLinea extends ConexionDB
                     if($stmt->execute())
                         return true;
                     //cerrar la conexion con la base de datos
-                    $stmt->close();
 
             } catch (Exception $exc) {
 
@@ -78,7 +75,6 @@ class ModeloInterfazProcesoLinea extends ConexionDB
 
                 if($stmt->execute())
                     return true;
-                    $stmt->close();
             } catch (Exception $exc) {
 
                 return $exc;

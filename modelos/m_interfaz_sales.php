@@ -29,7 +29,6 @@ class ModeloInterfazVenta extends ConexionDB
         $stmt->bindParam(":activo", $datos->activo, PDO::PARAM_BOOL);
         $stmt -> execute();
         return $stmt -> fetchAll(PDO::FETCH_ASSOC);
-        $stmt->close();
 	}
     
     public static function ejecutarInterfazVentaM($datos)
@@ -105,7 +104,6 @@ class ModeloInterfazVenta extends ConexionDB
                 //return array($data,$resultado_origen,$resultado_destino);
                 return $resultado;
 
-                $stmt->close();
 
             } catch (Exception $exc) {
 
@@ -134,7 +132,6 @@ class ModeloInterfazVenta extends ConexionDB
                 }
 
                 return $data;
-                $stmt->close();
 
             } catch (Exception $exc) {
 
@@ -162,7 +159,6 @@ class ModeloInterfazVenta extends ConexionDB
                 }
 
                 return $data;
-                $stmt->close();
 
             } catch (Exception $exc) {
 
@@ -251,7 +247,6 @@ class ModeloInterfazVenta extends ConexionDB
            $stmt -> execute();
 
            return $stmt -> fetchAll(PDO::FETCH_ASSOC);
-           $stmt->close();
 
         } catch (Exception $exc) {
 

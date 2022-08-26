@@ -35,7 +35,7 @@ class ModeloMenuRol extends ConexionDB
         $stmt -> execute();
 
         return $stmt -> fetchAll(PDO::FETCH_ASSOC);
-        $stmt->close();
+        
 	}
 
     public static function agregarRolMenuM($datos)
@@ -53,7 +53,7 @@ class ModeloMenuRol extends ConexionDB
                 if($stmt->execute())
                     return true;
                     
-                $stmt->close();
+                
             } catch (Exception $exc) {
     
                 return $exc;
@@ -70,7 +70,7 @@ class ModeloMenuRol extends ConexionDB
 
                 if($stmt->execute())
                     return true;
-                    $stmt->close();
+                    
             } catch (Exception $exc) {
 
                 return $exc;

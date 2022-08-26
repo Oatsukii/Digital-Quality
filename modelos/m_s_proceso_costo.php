@@ -24,7 +24,7 @@ class ModeloProcesoCosto extends ConexionDB
         $stmt -> execute();
         
         return $stmt -> fetchAll(PDO::FETCH_ASSOC);
-        $stmt->close();
+        
 	}
 
     public static function agregarProcesoM($datos)
@@ -45,7 +45,7 @@ class ModeloProcesoCosto extends ConexionDB
                 if ($stmt->execute()) {
                     return true;
                 }
-                $stmt->close();
+                
             } catch (Exception $exc) {
                 return $exc;
             }
@@ -71,7 +71,7 @@ class ModeloProcesoCosto extends ConexionDB
                     if ($stmt->execute()) {
                         return true;
                     }
-                    $stmt->close();
+                    
 
             } catch (Exception $exc) {
 
@@ -88,7 +88,7 @@ class ModeloProcesoCosto extends ConexionDB
 
                 if($stmt->execute())
                     return true;
-                    $stmt->close();
+                    
             } catch (Exception $exc) {
 
                 return $exc;
@@ -106,7 +106,7 @@ class ModeloProcesoCosto extends ConexionDB
         $stmt -> execute();
         
         return $stmt -> fetchAll(PDO::FETCH_ASSOC);
-        $stmt->close();
+        
 	}
 
 }
