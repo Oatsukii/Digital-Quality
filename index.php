@@ -16,7 +16,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
     <script src="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.js"></script>
     <link rel="icon" href="image/desarrollo_refividrio.ico">
-    <title>KOSTEN</title>
+    <title>Digital-Quality</title>
 </head>
 <body>
     <div class="login" id="login">
