@@ -14,12 +14,12 @@ var application_empresas = new Vue({
 
         hiddenId:null,
         id_s_norma_documento:'',
-        formato_archivo:'',
         nombre_archivo:'',
         archivo_bytea:'',
         fecha_disponible: '',
         esactivo: true,
         formato_archivo: 'application/pdf',
+        actualizarArchivo: false, 
 
       }
 
@@ -46,13 +46,44 @@ var application_empresas = new Vue({
             });
         },
 
-        comprobar(id){
+        async comprobar(id){
 
             if(this.nombre_archivo != ''){
                 if(id==1){
-                    this.agregar();
+
+                    var files = document.getElementById("file").files;
+                    if (files.length < 1 || this.nombre_archivo == '' || this.fecha_disponible == '' ) { 
+                        Swal.fire(
+                            'error',
+                            'Es obligatorio cargar un archivo y/o llenar el formulario',
+                            'error'
+                        );
+                    } else {
+                        this.cargar(files);
+                        var res = await this.cargar(files);
+                        this.agregar();
+
+                    }
+
                 }else if(id==2){
-                    this.editar();
+                    if(this.actualizarArchivo == true){
+
+                        var files = document.getElementById("file").files;
+                        if (files.length < 1 || this.nombre_archivo == '' || this.fecha_disponible == '') { 
+                            Swal.fire(
+                                'error',
+                                'Es obligatorio cargar un archivo y/o  asignar un nombre',
+                                'error'
+                            );
+                        } else {
+                            await this.cargar(files);
+                            this.editar();
+                        }
+
+                    } else {
+                        
+                        this.editar();
+                    }
                 }
 
             }else{
@@ -63,23 +94,42 @@ var application_empresas = new Vue({
                     'error'
                 );
             }
-        },  
+        },
 
+        async cargar(files){
+            
+                for (let index = 0; index < files.length; index++) {
+                    const element = files[index];
+                    let formData = new FormData();
+                    formData.append('file', element); 
+                    formData.append('type', 'file');  
+                    formData.append('name', element.name);
+                    const respuesta = await axios.post('../controladores/c_s_norma_documento_lineas.php',
+                    formData, {
+                        headers: {
+                            'Content-Type': 'multipart/form-data'
+                        }
+                    }).then(function (response) {
+                        return response.data;
+                    }).catch(function (response) {
+                        return response.data;
+                    });
+                    // this.nombre_archivo = respuesta.nombre_archivo;
+                    return this.archivo_bytea = respuesta.archivo_bytea;
+                    // this.agregar();
+                }
+           
+        },
 
         agregar(){
-            // this.agregarQR();
             const params = {
                 id_s_norma_documento:this.id_s_norma_documento,
-                formato_archivo:this.formato_archivo,
                 nombre_archivo:this.nombre_archivo,
                 archivo_bytea:this.archivo_bytea,
                 fecha_disponible:this.fecha_disponible,
-                qrgenerado:this.qrgenerado,
                 esactivo:this.esactivo,
-                nombre_archivo: this.nombre_archivo,
                 accion:'agregar',
             };
-            console.log(this.qrgenerado);
            
             axios.post('../controladores/c_s_norma_documento_lineas.php',params)
             .then((response)=>{
@@ -103,42 +153,18 @@ var application_empresas = new Vue({
             });
         },
 
-        // agregarQR(){
-        //     const params = {
-        //         id_s_norma_documento:this.id_s_norma_documento,
-        //         qr_bytea:this.qrgenerado,
-        //         esactivo:this.esactivo,
-        //         accion:'qrAgregar',
-        //     };
-        //     axios.post('../controladores/c_s_norma_documento_lineas.php',params)
-        //     .then((response)=>{
-        //         if(response.data == true ){
-        //             console.log('exito');
-        //         }
-        //         else{
-
-        //             Swal.fire(
-        //                 'error',
-        //                 'No se puede agregar el registro.'+ "<br/>" + response.data.errorInfo,
-        //                 'error'
-        //             );
-        //         }
-        //     });
-        // },
-
         editar(){
             const params = {
-                id_s_norma_documento_linea:this.hiddenId,
                 id_s_norma_documento:this.id_s_norma_documento,
-                formato_archivo:this.formato_archivo,
                 nombre_archivo:this.nombre_archivo,
-                nombre_archivo:this.nombre_archivo,
+                archivo_bytea:this.archivo_bytea,
                 fecha_disponible:this.fecha_disponible,
                 esactivo:this.esactivo,
                 id: this.hiddenId,
+                documento : this.actualizarArchivo==false?0:1,
                 accion:'editar',
             };
-        
+            console.log(params);
             axios.post('../controladores/c_s_norma_documento_lineas.php',params)
             .then((response)=>{
                 if(response.data == true){
@@ -201,39 +227,6 @@ var application_empresas = new Vue({
                 })
         },
 
-        async cargar(){
-            var files = document.getElementById("file").files;
-            if (files.length < 1 || this.nombre_archivo == '' || this.fecha_disponible == '') { 
-                Swal.fire(
-                    'error',
-                    'Es obligatorio cargar un archivo y/o  asignar un nombre',
-                    'error'
-                );
-            } else {
-                for (let index = 0; index < files.length; index++) {
-                    const element = files[index];
-                    let formData = new FormData();
-                    formData.append('file', element); 
-                    formData.append('type', 'file');  
-                    formData.append('name', element.name);
-                    const respuesta = await axios.post('../controladores/c_s_norma_documento_lineas.php',
-                    formData, {
-                        headers: {
-                            'Content-Type': 'multipart/form-data'
-                        }
-                    }).then(function (response) {
-                        return response.data;
-                    }).catch(function (response) {
-                        return response.data;
-                    });
-                    // this.nombre_archivo = respuesta.nombre_archivo;
-                    this.archivo_bytea = respuesta.archivo_bytea;
-                    this.agregar();
-                }
-            }
-           
-        },
-
 
         abrirModal(modo, row = []){
             this.modalCrud = true;
@@ -246,16 +239,18 @@ var application_empresas = new Vue({
                 this.nombre_archivo = row.nombre_archivo;
                 this.esactivo = row.esactivo;
                 this.fecha_disponible = row.fecha_disponible;
-                this.archivo_bytea = row.archivo_bytea;
+                this.archivo_bytea = row.archivo;
                 this.hiddenId = row.id_s_norma_documento_linea;
-                
+                console.log(this.archivo_bytea, this.nombre_archivo);
             }
         },
 
         cerrarModal(){
             this.modalCrud = false;
             input=document.getElementById("file");
-            input.value = '';
+            if(input != null){
+                input.value = '';
+            }
             this.formato_archivo = '';
             this.nombre_archivo = '';
             this.archivo_bytea = '';
@@ -263,7 +258,8 @@ var application_empresas = new Vue({
             this.nombre_archivo ='';
             this.esactivo = true;
             this.modoAgregar = true;
-            this.hiddenId = '';
+            this.hiddenId = null;
+            this.actualizarArchivo = false;
 
         },
 
@@ -275,7 +271,6 @@ var application_empresas = new Vue({
            
 
         },
-
 
     },
 
